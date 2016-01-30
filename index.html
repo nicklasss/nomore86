@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>No More 86</title>
+		<link href="public/css/main.css" rel="stylesheet">
+		 <meta name="viewport" id="viewport"
+     content="width=device-width, height=device-height,
+     initial-scale=1.0, maximum-scale=1.0,
+     user-scalable=no" />
+		<!--<script src="phonegap.js"></script>-->
+	</head>
+	<body>
+		<div class="navbar">
+			<img src ="public/img/home.png" class="logo">
+			<img src ="public/img/gear.png" class="icono" id="settings">
+			<img src ="public/img/info.png" class="icono" id="info">				
+		</div>
+		<div class="contenedor">
+			<div class="centrar">
+				<img src="public/img/logo.jpg" class="logo-home">
+				<br><br>
+				<div class="home-buttons centrar">
+					<div>
+						<button class="btn btn-primary" id="btn-need">I need a solution</button>
+						<span class="btn-hint">Register your business here</span>
+					</div>
+					<div>
+						<button class="btn btn-danger" id="btn-iam">I am the solution</button>
+						<span class="btn-hint">Business affiliation & and service expert registration here</span>
+					</div>
+				</div>
+			</div>
+		</div>			
+		<script src="public/js/jquery.js"></script>
+		<script  type="text/javascript" language="javascript">
+			var base_url = "TODO";
+			var ProjectKey = "581783556753";
+			var pushNotification;
+			var latitud, longitud;
+
+			function ajax(url,data,done,error){
+	            $.ajax({
+	                url: url,
+	                context : document.body,
+	                dataType: "json",
+	                type: "POST",
+	                data: data
+	            }).done(done).error(error);
+	        }
+
+	        function iAmTheSolution(){
+
+	        }
+
+	        function iNeedASolution(){
+	        	
+	        }
+
+	        function registrar_usuario(){
+	        	ajax(
+		        	base_url+'usuarios/nuevo',
+		        	{
+		        		'gcm_id' : localStorage.regid,
+		        		'latitud' : latitud,
+		        		'longitud' : longitud,
+		        		'modelo': device.model,
+		        		'plataforma' : device.platform,
+		        		'uuid' : device.uuid,
+		        		'version' : device.version
+		        	},
+		        	function(data){
+		        		if(data.STATUS == 'OK'){
+		        			localStorage.usuario = data.ID;
+		        			//alert(localStorage.usuario);
+		        		}
+		        	},
+		        	function(error){
+
+		        	}
+	        	);
+	        }
+
+	        function actualizar_ubicacion(){
+	        	ajax(
+		        	base_url+'usuarios/actualizar',
+		        	{
+		        		'id' : localStorage.usuario,
+		        		'latitud' : latitud,
+		        		'longitud' : longitud
+		        	},
+		        	function(data){},
+		        	function(error){}
+	        	);
+	        }
+
+			function registrar(){
+				//alert('registra');
+				if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
+				    //alert('registra2');
+				    pushNotification.register(
+				    successHandler,
+				    errorHandler,
+				    {
+				        "senderID": ProjectKey,
+				        "ecb":"onNotification"
+				    });
+				}else{
+					pushNotification.register(
+				    tokenHandler,
+				    errorHandler,
+				    {
+				        "badge":"true",
+				        "sound":"true",
+				        "alert":"true",
+				        "ecb":"onNotificationAPN"
+				    });
+				}
+			}
+
+			// result contains any message sent from the plugin call
+			function successHandler (result) {
+			    //alert('result = ' + result);
+			}
+
+			// result contains any error description text returned from the plugin call
+			function errorHandler (error) {
+			    navigator.notification.alert(
+							    error,  // message
+							    null,
+							    'Error', // title
+							    'OK' // buttonName
+							);
+			}
+
+			// Android and Amazon Fire OS
+			function onNotification(e) {
+			    switch( e.event )
+			    {
+				    case 'registered':
+				        if ( e.regid.length > 0 )
+				        {
+				        	localStorage.regid = e.regid;
+				        	registrar_usuario();
+				        	//alert(e.regid);
+				        }
+				        //alert('sin regid');
+				    break;
+				    case 'error':
+				    	navigator.notification.alert(
+							    e.msg,  // message
+							    null,
+							    'Error', // title
+							    'OK' // buttonName
+							);
+				    break;
+				    default:
+				        navigator.notification.alert(
+							    '¡Wow! un error inesperado ha ocurrido, por favor intenta cargar de nuevo.',  // message
+							    null,
+							    'Error', // title
+							    'OK' // buttonName
+							);
+				    break;
+			  	}
+			}
+
+			// iOS
+			function onNotificationAPN (event) {
+			    if ( event.alert )
+			    {
+			        navigator.notification.alert(event.alert);
+			    }
+
+			    if ( event.sound )
+			    {
+			        var snd = new Media(event.sound);
+			        snd.play();
+			    }
+
+			    if ( event.badge )
+			    {
+			        pushNotification.setApplicationIconBadgeNumber(null, null, event.badge);
+			    }
+			}
+
+			function tokenHandler (result) {
+			    // Your iOS push server needs to know the token before it can push to this device
+			    // here is where you might want to send it the token for later use.
+			    console.log('device token = ' + result);
+			    localStorage.regid = result;
+				registrar_usuario();
+			}
+
+			function mostrar(identificador){
+				localStorage.sismo = identificador;
+				window.location.assign("sismo.html");
+			}
+
+			function getlocation(pos) {
+				latitud = pos.coords.latitude;
+				longitud = pos.coords.longitude;
+				if(localStorage.regid) actualizar_ubicacion();
+				else registrar();
+			}
+			
+			
+			function failgeo(error) {
+				latitud = 4;
+				longitud = -70;
+				if(localStorage.regid) actualizar_ubicacion();
+				else registrar();
+			}
+
+			document.addEventListener("deviceready", onDeviceReady, false);
+
+			function onDeviceReady() {
+				navigator.geolocation.getCurrentPosition(getlocation, failgeo, { maximumAge: 5000, timeout: 5000, enableHighAccuracy: true }); 
+				$( "#info" ).on( "click", informacion);
+	        	$( ".logo" ).on( "click", function(){window.location.assign("index.html");});
+	        	$( "#settings" ).on( "click", function(){window.location.assign("configurar.html");});
+	        	ajax(
+        			base_url+'sismos/ver',
+        			null,
+        			function(data){
+        				pushNotification = window.plugins.pushNotification;
+        				if(data.STATUS == 'OK'){
+        					var contenido = '';
+        					for(var i = 0; i < data.DATOS.length; i++){
+        						contenido += '<div onclick="mostrar('+data.DATOS[i].id+')">';
+        						contenido += '<div class="col-2 enlinea">';
+        						if(parseFloat(data.DATOS[i].magnitud) > 0)
+        							contenido += '<div class="magnitud centrar">'+data.DATOS[i].magnitud+'</div>';
+        						else
+        							contenido += '<div class="magnitud centrar">'+data.DATOS[i].magnitud_richter+'</div>';
+        						contenido += '</div>';
+        						contenido += '<div class="col-8 enlinea">';
+        						contenido += '<div class="titulo">'+data.DATOS[i].epicentro+'</div>';
+        						contenido += '<div class="subtitulo">'+data.DATOS[i].fecha+'</div>';
+        						contenido += '<hr>';
+        						contenido += '</div>';
+        						contenido += '</div>';
+        					}
+        					$('.contenedor').html(contenido);
+        				}
+        			},
+        			function(){
+        				var contenido = '<div class="centrar"><br><br>';
+        				contenido += '<h3>¡Ups!, Houston tenemos un problema, al parecer tu conexión a internet está fallando.</h3><br>';
+        				contenido += '<a href="index.html" class="btn btn-danger">RECARGAR</a>';
+        				contenido += '</div>';
+        				$('.contenedor').html(contenido);
+        			}
+        		);
+			}
+		</script>
+	</body>
+</html>

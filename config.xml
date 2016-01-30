@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.nomore86"
+        version     = "1.0.0" >
+
+    <name>No More 86</name>
+
+    <description>
+        Esta aplicación busca dar solución a los problemas del día a día en los locales comerciales como restaurantes, etc.
+    </description>
+
+    <author href="https://build.phonegap.com" email="nicoduran92@gmail.com">
+        Nicolás Durán López
+    </author>
+	
+    <access origin="*" />
+
+	<icon src="img/logo.png" />
+	
+	<preference name="permissions" value="none" />
+	
+	<preference name="orientation" value="portrait" />
+
+	<gap:plugin name="org.apache.cordova.device" />
+	<gap:plugin name="cordova-plugin-whitelist" source="npm" />
+    <gap:plugin name="com.phonegap.plugins.pushplugin" version="2.4"/>
+	<gap:plugin name="org.apache.cordova.geolocation" version="0.3.2"/>
+    <gap:plugin name="org.apache.cordova.dialogs"/>
+    <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
+</widget>

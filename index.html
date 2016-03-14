@@ -8,7 +8,7 @@
      content="width=device-width, height=device-height,
      initial-scale=1.0, maximum-scale=1.0,
      user-scalable=no" />
-		<script src="phonegap.js"></script>
+		<!--<script src="phonegap.js"></script>-->
 	</head>
 	<body>
 		<div class="navbar">
@@ -41,21 +41,11 @@
 			var isEditting = false;
 
 			var _init = function(){
-				setEvents();
-			}
+				setEvents();			}
 
 			var setEvents = function(){
 				$('#btn-need').on('click',function(){window.location.assign("needSolution.html");});
 				$('#btn-iam').on('click',function(){window.location.assign("iAmTheSolution.html");});
-			}
-
-			var loadEditarPregunta = function(id){
-				
-			}
-
-			var enviarEdicion = function(id){
-				console.log('editara pregunta '+id);
-				console.log('pregunta = '+$('#p'+id+' .inputPregunta').html());
 			}
 
 			var ajax = function(url,data,done,error){
@@ -247,8 +237,7 @@
 			document.addEventListener("deviceready", onDeviceReady, false);
 
 			function onDeviceReady() {
-				_nomore86._init();
-				
+				_nomore86.init();
 			}
 		</script>
 	</body>

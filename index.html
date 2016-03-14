@@ -8,7 +8,7 @@
      content="width=device-width, height=device-height,
      initial-scale=1.0, maximum-scale=1.0,
      user-scalable=no" />
-		<!--<script src="phonegap.js"></script>-->
+		<script src="phonegap.js"></script>
 	</head>
 	<body>
 		<div class="navbar">
@@ -34,12 +34,31 @@
 		</div>			
 		<script src="public/js/jquery.js"></script>
 		<script  type="text/javascript" language="javascript">
-			var base_url = "TODO";
-			var ProjectKey = "581783556753";
-			var pushNotification;
-			var latitud, longitud;
 
-			function ajax(url,data,done,error){
+
+		var _nomore86 = (function(){
+
+			var isEditting = false;
+
+			var _init = function(){
+				setEvents();
+			}
+
+			var setEvents = function(){
+				$('#btn-need').on('click',function(){window.location.assign("needSolution.html");});
+				$('#btn-iam').on('click',function(){window.location.assign("iAmTheSolution.html");});
+			}
+
+			var loadEditarPregunta = function(id){
+				
+			}
+
+			var enviarEdicion = function(id){
+				console.log('editara pregunta '+id);
+				console.log('pregunta = '+$('#p'+id+' .inputPregunta').html());
+			}
+
+			var ajax = function(url,data,done,error){
 	            $.ajax({
 	                url: url,
 	                context : document.body,
@@ -48,6 +67,13 @@
 	                data: data
 	            }).done(done).error(error);
 	        }
+
+			return {
+				init : _init
+			}
+		})();
+
+			
 
 	        function iAmTheSolution(){
 
@@ -221,8 +247,8 @@
 			document.addEventListener("deviceready", onDeviceReady, false);
 
 			function onDeviceReady() {
-				$('#btn-need').on('click',function(){window.location.assign("needSolution.html");});
-				$('#btn-iam').on('click',function(){window.location.assign("iAmTheSolution.html");});
+				_nomore86._init();
+				
 			}
 		</script>
 	</body>

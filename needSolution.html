@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>No More 86</title>
+		<link href="public/css/main.css" rel="stylesheet">
+		 <meta name="viewport" id="viewport"
+     content="width=device-width, height=device-height,
+     initial-scale=1.0, maximum-scale=1.0,
+     user-scalable=no" />
+		<!--<script src="phonegap.js"></script>-->
+	</head>
+	<body>
+		<div class="navbar">
+			<img src ="public/img/home.png" class="logo">
+			<img src ="public/img/gear.png" class="icono" id="settings">
+			<img src ="public/img/info.png" class="icono" id="info">				
+		</div>
+		<div class="contenedor">
+			<div class="centrar">
+				<h2>Request a solution for your dilemma</h2>
+				<br><br>
+				<div class="solutions-buttons centrar">
+					<div class="solutions-option">
+						<button class="btn btn-primary" id="btn-back-house">Back of the house</button>
+						<ul class="lista-opciones lista-front">
+							<li>Appliance repair</li>
+							<li>Kitchen staff/prep/cleaning</li>
+						</ul>
+					</div>
+					<div class="solutions-option">
+						<button class="btn btn-primary" id="btn-front-house">Front of the house</button>
+						<ul class="lista-opciones">
+							<li>Baristas</li>
+							<li>Coat check staff</li>
+							<li>Catering staff</li>
+						</ul>
+					</div>
+					<div class="solutions-option">
+						<button class="btn btn-primary" id="btn-supplies">Supplies</button>
+						<ul class="lista-opciones">
+							<li>Buzz</li>
+							<li>Raw Ingredients</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>			
+		<script src="public/js/jquery.js"></script>
+		<script  type="text/javascript" language="javascript">
+
+			function ajax(url,data,done,error){
+	            $.ajax({
+	                url: url,
+	                context : document.body,
+	                dataType: "json",
+	                type: "POST",
+	                data: data
+	            }).done(done).error(error);
+	        }
+
+			if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+		        document.addEventListener("deviceready", onDeviceReady, false);
+		    } else {
+		        onDeviceReady();
+		    }
+
+		    function showList(list){
+		    	switch(list) {
+				    case 'front':
+				        $( ".lista-front" ).animate({
+						    height: "500px"
+						  }, 5000, function() {
+						    // Animation complete.
+						  });
+				        break;
+				    case 'back':
+
+				        break;
+				    case 'supplies':
+
+				        break;
+				    default:
+				        return;
+				}
+		    }
+
+			function onDeviceReady() {
+				$('#btn-front-house').on('click',function(){
+					showList('front');
+				});
+				$('#btn-back-house').on('click',function(){showList('back');
+				});
+				$('#btn-supplies').on('click',function(){showList('supplies');
+				});
+
+			}
+		</script>
+	</body>
+</html>

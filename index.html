@@ -63,6 +63,8 @@
 			}
 		})();
 
+
+
 			
 
 	        function iAmTheSolution(){
@@ -235,6 +237,10 @@
 		    }
 
 			document.addEventListener("deviceready", onDeviceReady, false);
+
+			$( document ).ready(function() {
+			    onDeviceReady();
+			});
 
 			function onDeviceReady() {
 				_nomore86.init();

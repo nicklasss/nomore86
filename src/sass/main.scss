@@ -7,6 +7,8 @@ Variables
 $font-stack:    RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
 $primary-color: #1C2876;
 $primary-color-light: #565B9E;
+$secondary-color: #ec971f;
+$secondary-color-light: #f0ad4e;
 $navbar-height: 60px;
 $font-size: 14px;
 $font-size-sm: 12px;
@@ -251,6 +253,22 @@ html, body{
 	color: #aaa;
 }
 
+/*
+	needSolution.html
+*/
+
+.lista-opciones{
+    margin: 5px auto;
+    padding: 0px;
+}
+
+.lista-opciones li{
+	width: auto;
+	list-style: none;
+	display: inline-block;
+	margin: 2px auto;
+}
+
 p{
 	color: #aaa;
 	font-size: 14px;
@@ -350,6 +368,24 @@ a:focus, a:hover a:active{
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 	text-decoration: none;
 }
+
+.btn-secondary{
+	color: #fff;
+	background-color: $secondary-color;
+	border-color: $secondary-color;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	text-decoration: none;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary.focus, .btn-secondary:active, .btn-secondary.active, .open>.dropdown-toggle.btn-secondary {
+	color: #fff;
+	background-color: $secondary-color-light;
+	border-color: $secondary-color-light;
+	box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+}
+
+
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger.focus, .btn-danger:active, .btn-danger.active, .open>.dropdown-toggle.btn-danger {
 	color: #fff;

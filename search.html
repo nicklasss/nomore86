@@ -34,7 +34,6 @@
 
 			var _init = function(){
 				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
-				cargarMapa();
 				setEvents();
 			}
 
@@ -63,10 +62,10 @@
 			}
 
 			var successLocation = function(pos) {
-				latitud = pos.coords.latitude;
-				longitud = pos.coords.longitude;
+				latitud = pos.coords.latitude || 4;
+				longitud = pos.coords.longitude || -70;
 				alert(latitude + ' - ' + longitude);
-				cargarMapa(latitud,longitude);
+				setLocationMap(latitude,longitude);
 				search(searchUrl,localStorage.lookingFor);
 			}
 
@@ -109,11 +108,10 @@
 	        document.addEventListener("deviceready", onDeviceReady, false);
 
 	        // sólo para probar en navegador
-	        /*
+	        
 	        $( document ).ready(function() {
 	        	onDeviceReady()
 	        });
-			*/
 		</script>
 	</body>
 </html>

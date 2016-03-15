@@ -54,7 +54,7 @@
 				var marker = L.marker([latitud, longitude], {
 							    icon: L.mapbox.marker.icon({
 							      'marker-color': '#f86767'
-							    }),null
+							    }),draggable: true
 							}).addTo(map);
 			}
 
@@ -103,27 +103,6 @@
 	            }).done(done).error(error);
 	        }
 
-	        function cargar_mapa(latitude, longitude, lugar){
-	        	L.mapbox.accessToken = 'pk.eyJ1IjoiamJlbGVubyIsImEiOiJRbGhXRkhVIn0.h2cvX1dQMRnGDT3OBppm3A';
-				var map = L.mapbox.map('map', 'jbeleno.mokc5ll5').setView([latitude, longitude], 10);
-
-				L.mapbox.featureLayer({
-				    type: 'Feature',
-				    geometry: {
-				        type: 'Point',
-				        coordinates: [
-				          	longitude,
-				           	latitude
-				        ]
-				    },
-				    properties: {
-				        title: 'Epicentro',
-				        description: lugar,
-				        'marker-size': 'large',
-				        'marker-color': '#FF5252'
-				    }
-				}).addTo(map);
-	        }
 
 	        function onDeviceReady(){
 	        	_nomore86.init();

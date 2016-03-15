@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>No More 86</title>
+		<<link href="public/css/main.css" rel="stylesheet">
+		 <meta name="viewport" id="viewport"
+	     content="width=device-width, height=device-height,
+	     initial-scale=1.0, maximum-scale=1.0,
+	     user-scalable=no" />
+		<script src="phonegap.js"></script>
+	</head>
+	<body>
+		<div class="navbar">
+			<img src ="public/img/home.png" class="logo">
+			<img src ="public/img/gear.png" class="icono" id="settings">
+			<img src ="public/img/info.png" class="icono" id="info">				
+		</div>
+		<div class="contenedor">
+			<div id="map"></div>
+			<div class="contenedor">
+				<br>
+				<div class="data-sismo"><img src="img/map-marker.png" class="icono-sismo"> <div class="vcentrar enlinea titulo" id="lugar">EPICENTRO</div></div>
+				<div class="data-sismo"><img src="img/fecha.png" class="icono-sismo"> <div class="vcentrar enlinea titulo" id="fecha"> FECHA</div></div>
+				<div class="data-sismo"><img src="img/regla.png" class="icono-sismo"> <div class="vcentrar enlinea titulo" id="magnitud"> MAGNITUD</div></div>
+				<div class="data-sismo"><img src="img/ancla.png" class="icono-sismo"> <div class="vcentrar enlinea titulo" id="profundidad"> PROFUNDIDAD</div></div>
+				<div class="centrar">
+					<br>
+					<!--<img id="btn-fb" class="icono-redes"  src="img/share_fb.png">-->
+					<img id="btn-tw" class="icono-redes" src="img/share_tw.png">
+				</div>
+			</div>
+		</div>
+		<script src="js/jquery.js"></script>
+		<script src='js/mapbox.js'></script>
+		<script  type="text/javascript" language="javascript">
+
+
+		var _nomore86 = (function(){
+
+			var latitude,longitude,map;
+			var searchUrl = "";
+
+
+			var _init = function(){
+				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 5000, enableHighAccuracy: true });
+				setEvents();
+			}
+
+			var setEvents = function(){
+				$( ".logo" ).on( "click", function(){window.location.assign("index.html");});
+			}
+
+			var search = function(url,lookingFor){
+				/*
+				ajax(
+					url,
+					{ lookingFor : lookingFor },
+					function(data){
+
+					},
+					function(){
+
+					}
+				)*/
+				var marker = L.marker([latitud, longitude], {
+							    icon: L.mapbox.marker.icon({
+							      'marker-color': '#f86767'
+							    }),null
+							}).addTo(map);
+			}
+
+			var successLocation = function(pos) {
+				latitud = pos.coords.latitude;
+				longitud = pos.coords.longitude;
+				cargarMapa(latitud,longitude);
+				search(searchUrl,localStorage.lookingFor);
+			}
+
+			var failGeo = function(error) {
+				latitud = 4;
+				longitud = -70;
+			}
+
+			var ajax = function(url,data,done,error){
+	            $.ajax({
+	                url: url,
+	                context : document.body,
+	                dataType: "json",
+	                type: "POST",
+	                data: data
+	            }).done(done).error(error);
+	        }
+
+	        var cargarMapa = function(latitude, longitude){
+	        	L.mapbox.accessToken = 'pk.eyJ1Ijoibmljb2xhc2R1cmFubDEiLCJhIjoiY2lrMDMxbG92MzY5bnYybTVsc2xhYnBoNSJ9.JzssW3tAdq-CYBwYOTjxjg';
+				map = L.mapbox.map('map', 'mapbox.streets').setView([latitude, longitude], 10);
+	        }
+
+	        return {
+	        	init : _init
+	        }
+
+		})();
+			var base_url = "http://52.27.16.14/sismicapp/";
+			var mensaje = "Sismicapp: La app de sismos en Colombia, entérate en tiempo real de los sismos que ocurren en el territorio nacional.";
+
+			function ajax(url,data,done,error){
+	            $.ajax({
+	                url: url,
+	                context : document.body,
+	                dataType: "json",
+	                type: "POST",
+	                data: data
+	            }).done(done).error(error);
+	        }
+
+	        function cargar_mapa(latitude, longitude, lugar){
+	        	L.mapbox.accessToken = 'pk.eyJ1IjoiamJlbGVubyIsImEiOiJRbGhXRkhVIn0.h2cvX1dQMRnGDT3OBppm3A';
+				var map = L.mapbox.map('map', 'jbeleno.mokc5ll5').setView([latitude, longitude], 10);
+
+				L.mapbox.featureLayer({
+				    type: 'Feature',
+				    geometry: {
+				        type: 'Point',
+				        coordinates: [
+				          	longitude,
+				           	latitude
+				        ]
+				    },
+				    properties: {
+				        title: 'Epicentro',
+				        description: lugar,
+				        'marker-size': 'large',
+				        'marker-color': '#FF5252'
+				    }
+				}).addTo(map);
+	        }
+
+	        function onDeviceReady(){
+	        	_nomore86.init();
+	        }
+
+	        document.addEventListener("deviceready", onDeviceReady, false);
+
+	        $( document ).ready(function() {
+	        	onDeviceReady()
+
+	        	
+
+
+	        	ajax(
+	        		base_url+'sismos/detalle',
+	        		{
+	        			'id': localStorage.sismo
+	        			'usuario' : localStorage.usuario,
+	        		},
+	        		function(data){
+	        			if(data.STATUS == 'OK'){
+	        				cargar_mapa(data.DATOS.latitud, data.DATOS.longitud, data.DATOS.epicentro)
+	        				$('#lugar').html(data.DATOS.epicentro);
+	        				$('#fecha').html(data.DATOS.fecha);
+	        				$('#profundidad').html(data.DATOS.profundidad+' Km');
+	        				if(parseFloat(data.DATOS.magnitud) > 0)
+	        					$('#magnitud').html(data.DATOS.magnitud+' (Mw)');
+	        				else
+	        					$('#magnitud').html(data.DATOS.magnitud_richter+' (Richter)');
+
+	        				mensaje = 'Sismo de '+$('#magnitud').html()+' tuvo lugar hoy con epicentro cercano a '+$('#lugar').html()+' y profundidad de '+$('#profundidad').html();
+	        			}
+	        		},
+	        		function(){
+	        			var contenido = '<div class="centrar"><br><br>';
+        				contenido += '<h4>¡Ups!, Houston tenemos un problema, al parecer tu conexión a internet está fallando.</h4><br>';
+        				contenido += '<a href="sismo.html" class="btn btn-danger">RECARGAR</a>';
+        				contenido += '</div>';
+        				$('#map').html(contenido);
+	        		}
+	        	);
+	        });
+		</script>
+	</body>
+</html>

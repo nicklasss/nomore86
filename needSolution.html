@@ -24,23 +24,23 @@
 					<div class="solutions-option">
 						<button data-opcion="back" class="btn btn-primary btn-solution" id="btn-back-house">Back of the house</button>
 						<ul class="lista-opciones lista-back">
-							<li class="btn btn-secondary">Appliance repair</li>
-							<li class="btn btn-secondary">Kitchen staff/prep/cleaning</li>
+							<li id="appliance" class="btn btn-secondary">Appliance repair</li>
+							<li id="kitchen" class="btn btn-secondary">Kitchen staff/prep/cleaning</li>
 						</ul>
 					</div>
 					<div class="solutions-option">
 						<button data-opcion="front" class="btn btn-primary btn-solution" id="btn-front-house">Front of the house</button>
 						<ul class="lista-opciones lista-front">
-							<li class="btn btn-secondary">Baristas</li>
-							<li class="btn btn-secondary">Coat check staff</li>
-							<li class="btn btn-secondary">Catering staff</li>
+							<li id="baristas" class="btn btn-secondary">Baristas</li>
+							<li id="coat" class="btn btn-secondary">Coat check staff</li>
+							<li id="catering" class="btn btn-secondary">Catering staff</li>
 						</ul>
 					</div>
 					<div class="solutions-option">
 						<button data-opcion="supplies" class="btn btn-primary btn-solution" id="btn-supplies">Supplies</button>
 						<ul class="lista-opciones lista-supplies">
-							<li class="btn btn-secondary">Buzz</li>
-							<li class="btn btn-secondary">Raw Ingredients</li>
+							<li id="buzz" class="btn btn-secondary">Buzz</li>
+							<li id="raw-ingredients" class="btn btn-secondary">Raw Ingredients</li>
 						</ul>
 					</div>
 				</div>
@@ -59,8 +59,12 @@
 
 				var setEvents = function(){
 					$('.btn-solution').on('click',function(){
-						console.log('event called')
 						displayOptions($(this).data('opcion'));
+					})
+
+					$('.lista-opciones li').on('click',function(){
+						localStorage.lookingFor = $(this).attr('id');
+						window.location.assign("search.html");
 					})
 				}
 

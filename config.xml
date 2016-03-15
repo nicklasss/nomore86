@@ -25,7 +25,7 @@
 	<gap:plugin name="org.apache.cordova.device" />
 	<gap:plugin name="cordova-plugin-whitelist" source="npm" />
     <gap:plugin name="com.phonegap.plugins.pushplugin" version="2.4"/>
-	<gap:plugin name="org.apache.cordova.geolocation" version="1.0.0"/>
+	<plugin name="cordova-plugin-geolocation" spec="1.0.1" source="pgb" />
     <gap:plugin name="org.apache.cordova.dialogs"/>
     <gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
 </widget>

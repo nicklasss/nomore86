@@ -33,6 +33,7 @@
 
 
 			var _init = function(){
+				alert('init called')
 				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
 				setEvents();
 			}
@@ -108,10 +109,12 @@
 	        document.addEventListener("deviceready", onDeviceReady, false);
 
 	        // sólo para probar en navegador
-	        
+	        /*
 	        $( document ).ready(function() {
 	        	onDeviceReady()
 	        });
+			*/
+			
 		</script>
 	</body>
 </html>

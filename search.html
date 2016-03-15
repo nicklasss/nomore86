@@ -31,7 +31,7 @@
 
 
 			var _init = function(){
-				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 5000, enableHighAccuracy: true });
+				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
 				setEvents();
 			}
 
@@ -92,18 +92,6 @@
 	        }
 
 		})();
-			var base_url = "http://52.27.16.14/sismicapp/";
-			var mensaje = "Sismicapp: La app de sismos en Colombia, entérate en tiempo real de los sismos que ocurren en el territorio nacional.";
-
-			function ajax(url,data,done,error){
-	            $.ajax({
-	                url: url,
-	                context : document.body,
-	                dataType: "json",
-	                type: "POST",
-	                data: data
-	            }).done(done).error(error);
-	        }
 
 
 	        function onDeviceReady(){
@@ -112,9 +100,12 @@
 
 	        document.addEventListener("deviceready", onDeviceReady, false);
 
+	        // sólo para probar en navegador
+	        /*
 	        $( document ).ready(function() {
 	        	onDeviceReady()
 	        });
+			*/
 		</script>
 	</body>
 </html>

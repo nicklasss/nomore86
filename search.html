@@ -56,6 +56,7 @@
 							      'marker-color': '#f86767'
 							    }),draggable: true
 							}).addTo(map);
+				alert('search');
 			}
 
 			var successLocation = function(pos) {
@@ -68,6 +69,7 @@
 			var failGeo = function(error) {
 				latitud = 4;
 				longitud = -70;
+				alert(error.message);
 			}
 
 			var ajax = function(url,data,done,error){

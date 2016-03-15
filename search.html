@@ -26,12 +26,15 @@
 
 		var _nomore86 = (function(){
 
-			var latitude,longitude,map;
+			var map;
+			var latitud = 4;
+			var longitud = -70;
 			var searchUrl = "";
 
 
 			var _init = function(){
 				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
+				cargarMapa();
 				setEvents();
 			}
 
@@ -62,6 +65,7 @@
 			var successLocation = function(pos) {
 				latitud = pos.coords.latitude;
 				longitud = pos.coords.longitude;
+				alert(latitude + ' - ' + longitude);
 				cargarMapa(latitud,longitude);
 				search(searchUrl,localStorage.lookingFor);
 			}
@@ -70,7 +74,6 @@
 				latitud = 4;
 				longitud = -70;
 				alert(error.message);
-				cargarMapa(latitud,longitud);
 			}
 
 			var ajax = function(url,data,done,error){
@@ -81,6 +84,10 @@
 	                type: "POST",
 	                data: data
 	            }).done(done).error(error);
+	        }
+
+	        var setLocationMap = function(latitude,longitude){
+	        	map.setCenter([latitude,longitude]);
 	        }
 
 	        var cargarMapa = function(latitude, longitude){

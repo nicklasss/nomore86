@@ -18,6 +18,7 @@
 		</div>
 		<div class="contenedor">
 			<div id="map"></div>
+			<div id="#debugDiv"></div>
 		</div>
 		<script src="public/js/jquery.js"></script>
 		<script src='public/js/mapbox.js'></script>
@@ -33,13 +34,18 @@
 
 
 			var _init = function(){
-				alert('init called')
-				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
+				console.log('init called')
 				setEvents();
 			}
 
 			var setEvents = function(){
 				$( ".logo" ).on( "click", function(){window.location.assign("index.html");});
+			}
+
+			var getLocation = function(){
+				alert('geolocation started')
+				navigator.geolocation.getCurrentPosition(successLocation, failGeo, { maximumAge: 5000, timeout: 15000, enableHighAccuracy: true });
+				alert('getlocation called')
 			}
 
 			var search = function(url,lookingFor){
@@ -59,13 +65,13 @@
 							      'marker-color': '#f86767'
 							    }),draggable: true
 							}).addTo(map);
-				alert('search');
+				console.log('search');
 			}
 
 			var successLocation = function(pos) {
-				latitud = pos.coords.latitude || 4;
-				longitud = pos.coords.longitude || -70;
-				alert(latitude + ' - ' + longitude);
+				alert('successLocation')
+				latitud = pos.coords.latitude;
+				longitud = pos.coords.longitude;
 				setLocationMap(latitude,longitude);
 				search(searchUrl,localStorage.lookingFor);
 			}
@@ -114,6 +120,18 @@
 	        	onDeviceReady()
 	        });
 			*/
+
+			if (typeof console  != "undefined") 
+			    if (typeof console.log != 'undefined')
+			        console.olog = console.log;
+			    else
+			        console.olog = function() {};
+
+			console.log = function(message) {
+			    console.olog(message);
+			    $('#debugDiv').append('<p>' + message + '</p>');
+			};
+			console.error = console.debug = console.info =  console.log
 			
 		</script>
 	</body>
